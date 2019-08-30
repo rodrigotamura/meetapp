@@ -21,6 +21,8 @@ class User extends Model {
 
       return this;
     });
+
+    return this;
   }
 
   checkPassword(password) {
