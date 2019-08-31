@@ -30,7 +30,6 @@ class MeetupController {
       localization: Yup.string().required(),
       date: Yup.date().required(),
       image: Yup.string().required(),
-      user_id: Yup.number().required(),
     });
 
     if(!(await schema.isValid(req.body))){
@@ -46,7 +45,7 @@ class MeetupController {
     }
 
     const meetup = await Meetup.create({
-      title, description, localization, date, image, user_id
+      title, description, localization, date, image, user_id: req.userId
     });
 
     return res.json(meetup);
