@@ -1,13 +1,21 @@
 import Meetup from '../models/Meetup';
-import { parseISO, startOfDay, isBefore } from 'date-fns';
+import { parseISO, startOfDay, endOfDay, isBefore } from 'date-fns';
 import * as Yup from 'yup';
 import User from '../models/User';
+import { Op } from 'sequelize';
 
 class MeetupController {
   async index(req, res){
+    // paginating & filtering by date
+    const {page=1, date: dateFilter} = req.query;
+    const itensPerPage = 10;
+
     const meetups = await Meetup.findAll({
       where: {
-        user_id: req.userId
+        user_id: req.userId,
+        date: {
+          [Op.between]: [startOfDay(parseISO(dateFilter)), endOfDay(parseISO(dateFilter))]
+        }
       },
       attributes: ['id', 'title', 'description', 'localization', 'date', 'image'],
       include: [
@@ -15,8 +23,13 @@ class MeetupController {
           model: User,
           attributes: ['id', 'name']
         }
-      ]
+      ],
+
+      limit: itensPerPage,
+      offset: (page - 1) * itensPerPage
     });
+
+
 
     return res.json(meetups);
   }

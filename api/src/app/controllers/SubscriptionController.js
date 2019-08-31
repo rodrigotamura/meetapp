@@ -1,17 +1,30 @@
-import Subscription from '../models/Subscription';
 import { Op } from 'sequelize';
 import * as Yup from 'yup';
-import Meetup from '../models/Meetup';
 import { parseISO, startOfDay, startOfHour, endOfHour, isBefore, format } from 'date-fns';
-
-import Mail from '../../lib/Mail';
-import User from '../models/User';
 import SubscribedMail from '../jobs/SubscribedMail';
 import Queue from '../../lib/Queue';
 
+import Subscription from '../models/Subscription';
+import Meetup from '../models/Meetup';
+import User from '../models/User';
+
 class SubscriptionController {
   async index(req, res){
-    return res.json();
+    const subscripted = await Subscription.findAll({where: {
+      user_id: req.userId,
+      },
+      include: [{
+        where: {date: {[Op.gte]: new Date()}},
+        model: Meetup,
+        attributes: ['title', 'date'],
+        include: [{
+          model: User,
+          attributes: ['name', 'email']
+        }],
+      }],
+    });
+
+    return res.json(subscripted);
   }
 
   /**
