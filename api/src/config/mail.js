@@ -4,9 +4,10 @@ export default {
   secure: false,
   auth: {
     user: '91af71e3f79cb5',
-    pass: 'dbd7e167f1eb19' 
+    pass: 'dbd7e167f1eb19',
   },
   default: {
     from: 'Meetapp Team <noreply@meetapp.com>',
-  }
+  },
 }
+;
