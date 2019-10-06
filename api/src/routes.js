@@ -14,18 +14,19 @@ const routes = new Router();
 const upload = multer(multerConfig);
 
 routes.post('/sessions', SessionController.store);
+routes.post('/users', UserController.store);
 
 routes.use(authMiddleware);
 routes.get('/users', UserController.index);
-routes.post('/users', UserController.store);
 routes.put('/users/:id', UserController.update);
-
 routes.post('/files', upload.single('file'), FileController.store);
+
 
 routes.get('/meetups', MeetupController.index);
 routes.post('/meetups', MeetupController.store);
 routes.put('/meetups/:id', MeetupController.update);
 routes.delete('/meetups/:id', MeetupController.delete);
+routes.get('/meetups/:id', MeetupController.show);
 
 routes.get('/subscriptions', SubscriptionController.index);
 routes.post('/subscriptions', SubscriptionController.store);
