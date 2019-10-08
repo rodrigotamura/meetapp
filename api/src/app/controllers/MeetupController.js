@@ -28,6 +28,7 @@ class MeetupController {
         },
         {
           model: File,
+          as: 'banner',
           attributes: ['name', 'path'],
         },
       ],
@@ -144,13 +145,14 @@ class MeetupController {
       include: [
         {
           model: File,
-          attributes: ['name', 'path'],
+          as: 'banner',
+          attributes: ['id', 'name', 'path'],
         },
       ],
     });
-    meetup.File.url = `${process.env.APP_URL}:${process.env.APP_PORT}/${meetup.File.path}`;
+    meetup.banner.url = `${process.env.APP_URL}:${process.env.APP_PORT}/${meetup.banner.path}`;
 
-    return res.json(meetup);
+    return res.json({ meetup });
   }
 }
 
