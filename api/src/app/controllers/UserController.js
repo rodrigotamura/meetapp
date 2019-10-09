@@ -47,7 +47,7 @@ class UserController {
     }
 
     // checking if given email exists
-    const user = await User.findByPk(req.params.id);
+    const user = await User.findByPk(req.userId);
     const { email, oldPassword } = req.body;
 
     // checking if oldPassword is correct
