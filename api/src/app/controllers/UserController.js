@@ -8,6 +8,18 @@ class UserController {
     return res.json(users);
   }
 
+  async show(req, res) {
+    const profile = await User.findByPk(req.userId, {
+      attributes: ['name', 'email'],
+    });
+
+    if (!profile) {
+      return res.status(400).json({ error: 'User not exists' });
+    }
+
+    return res.json({ profile });
+  }
+
   async store(req, res) {
     // validating
     const schema = Yup.object().shape({
