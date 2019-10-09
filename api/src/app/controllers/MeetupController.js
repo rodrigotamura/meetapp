@@ -74,6 +74,7 @@ class MeetupController {
 
   async update(req, res) {
     const schema = Yup.object().shape({
+      banner_id: Yup.number().required(),
       title: Yup.string().required(),
       description: Yup.string().required(),
       localization: Yup.string().required(),
@@ -87,7 +88,7 @@ class MeetupController {
     const meetup = await Meetup.findByPk(req.params.id);
 
     // checking if user is owner of meetapp
-    if (req.userId !== req.body.user_id) {
+    if (req.userId !== meetup.user_id) {
       return res.status(401).json({ error: 'You do not have permition to update this Meetup' });
     }
 
@@ -105,11 +106,11 @@ class MeetupController {
 
     // updating
     const {
-      title, description, localization, date, image, user_id,
+      title, description, localization, date, image, user_id, banner_id,
     } = await meetup.update(req.body);
 
     return res.json({
-      title, description, localization, date, image, user_id,
+      title, description, localization, date, image, user_id, banner_id,
     });
   }
 
