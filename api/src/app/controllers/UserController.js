@@ -50,9 +50,9 @@ class UserController {
       oldPassword: Yup.string().min(6),
       password: Yup.string()
         .min(6)
-        .when('oldPassword', (oldPassword, field) => (oldPassword ? field.required() : field)),
+        .when('oldPassword', (oldPassword, value) => (oldPassword ? value.required() : value)),
       confirmPassword: Yup.string()
-        .when('password', (password, field) => (password ? field.required().oneOf([Yup.ref('password')]) : field)),
+        .when('password', (password, value) => (password ? value.required().oneOf([Yup.ref('password')]) : value)),
     });
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
@@ -76,9 +76,9 @@ class UserController {
     }
 
     // updating
-    const { name, email: userEmail } = await user.update(req.body);
+    const { id, name, email: userEmail } = await user.update(req.body);
 
-    return res.json({ name, email: userEmail });
+    return res.json({ id, name, email: userEmail });
   }
 }
 
