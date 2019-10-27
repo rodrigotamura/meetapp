@@ -1,14 +1,13 @@
-import { format, parseISO } from 'date-fns';
 import Mail from '../../lib/Mail';
 
-class SubscribedMail {
+class UnsubscribedMail {
   get key() {
     // when I declare a method with 'get' it's similar
     // to declare a variavel key
     // When we import CancellationMail, we can use CancellationMail.key
     // without use CancellationMail.key()
     // It's very nice because we do not need make constructor to return variables.
-    return 'SubscribedMail';
+    return 'UnsubscribedMail';
     // we are returning a unique key for this JOB called CancellationMail
   }
 
@@ -18,20 +17,18 @@ class SubscribedMail {
      * If a queue has 10 tasks, each task will execute this handle()
      */
 
-    const { meetup, subscriber, dateMail } = data;
+    const { subscription } = data;
 
-    await Mail.sendMail({
-      to: `${meetup.organizer.name} <${meetup.organizer.email}>`,
-      subject: 'New subscription in your Meetup',
-      template: 'newsubscriber', // not necessary to inform .hbs
+    const sent = await Mail.sendMail({
+      to: `${subscription.meetup.organizer.name} <${subscription.meetup.organizer.email}>`,
+      subject: 'Unsubscribed in your Meetup',
+      template: 'cancelsubscriber', // not necessary to inform .hbs
       context: {
         // here we set all variables our template is waiting for
-        meetup,
-        subscriber,
-        dateMail,
+        subscription,
       },
     });
   }
 }
 
-export default new SubscribedMail();
+export default new UnsubscribedMail();

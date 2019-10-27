@@ -1,0 +1,7 @@
+<strong>Hi, {{ subscription.meetup.organizer.name }}</strong>
+<p>Unfortunately one user has unsubscribed from your meetup.</p>
+<p>Please find out the details bellow:</p>
+<p>
+  <strong>Meetup: </strong>{{ subscription.meetup.title }}<br />
+  <strong>Subscriber:</strong> {{ subscription.user.name }} ({{ subscription.user.email }})<br />
+</p>

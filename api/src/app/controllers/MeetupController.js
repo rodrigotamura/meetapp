@@ -6,6 +6,7 @@ import { Op } from 'sequelize';
 import User from '../models/User';
 import File from '../models/File';
 import Meetup from '../models/Meetup';
+import Subscription from '../models/Subscription';
 
 class MeetupController {
   async index(req, res) {
@@ -24,6 +25,7 @@ class MeetupController {
       include: [
         {
           model: User,
+          as: 'organizer',
           attributes: ['id', 'name'],
         },
         {
@@ -149,11 +151,20 @@ class MeetupController {
           as: 'banner',
           attributes: ['id', 'name', 'path'],
         },
+        {
+          model: User,
+          as: 'organizer',
+          attributes: ['name'],
+        },
       ],
     });
     meetup.banner.url = `${process.env.APP_URL}:${process.env.APP_PORT}/${meetup.banner.path}`;
 
-    return res.json({ meetup });
+    // getting number of subscriptions
+    const subscribes = await Subscription.findAll({ where: { meetup_id: req.params.id } });
+    const amount = subscribes.length;
+
+    return res.json({ meetup, amount });
   }
 }
 
