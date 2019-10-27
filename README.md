@@ -8,6 +8,8 @@ Este sistema foi baseado nos requisitos proposto pela RocketSeat. [Veja aqui mai
 
 Após a clonagem deste repositório, criar o arquivo de ambiente `/backend/.env` baseado no arquivo `/backend/.env.example`, e atribuir os valores de conexão com o banco de dados PostgreSQL, Redis, e-mail, URL e a porta da aplicação.
 
+Logo após, dentro de cada pasta - backend, frontend e mobile, instalar as dependências através do `npm install` ou `yarn`.
+
 ### Subindo servidor Redis
 
 `docker run --name redisbarber -p 6379:6379 -d -t redis:alpine`
